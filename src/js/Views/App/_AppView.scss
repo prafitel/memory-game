@@ -1,0 +1,10 @@
+.app {
+  margin: 0 auto;
+  max-width: 500px;
+
+  .app__wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+}
