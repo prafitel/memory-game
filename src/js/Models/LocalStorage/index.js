@@ -1,90 +1,40 @@
+const MAX_LENGTH = 10;
+
 class LocalStorage {
-  setLocation(lat, lon) {
-    localStorage.setItem(
-      'location',
-      JSON.stringify({
-        latitude: lat,
-        longitude: lon,
-      }),
-    );
+  setLeaderBoard(attempts) {
+    const date = new Date();
+    const leaderBoardInfo = this.getSortedLeaderBoard([
+      ...this.getLeaderBoard(),
+      { date, attempts },
+    ]);
+
+    const newLeaderBoard =
+      leaderBoardInfo.length > MAX_LENGTH
+        ? leaderBoardInfo.slice(0, MAX_LENGTH)
+        : leaderBoardInfo;
+
+    localStorage.setItem('leaderBoard', JSON.stringify(newLeaderBoard));
   }
 
-  getLocationCoordinates() {
-    return JSON.parse(localStorage.getItem('location'));
+  getLeaderBoard() {
+    return JSON.parse(localStorage.getItem('leaderBoard')) ?? [];
   }
 
-  setUserCityLocationInfo(cityInfo) {
-    localStorage.setItem('userCityInfo', JSON.stringify(cityInfo));
-  }
+  getSortedLeaderBoard(leaderBoardInfo) {
+    if (leaderBoardInfo.length > 1) {
+      leaderBoardInfo.sort((a, b) => {
+        if (b.attempts !== a.attempts) {
+          return a.attempts - b.attempts;
+        }
 
-  getUserCityLocationInfo() {
-    return JSON.parse(localStorage.getItem('userCityInfo'));
-  }
+        const dateA = Date.parse(a.date.split('.').reverse().join('-'));
+        const dateB = Date.parse(b.date.split('.').reverse().join('-'));
 
-  setLanguage(lang) {
-    localStorage.setItem('language', lang);
-  }
+        return +dateA - +dateB;
+      });
+    }
 
-  getLanguage() {
-    return localStorage.getItem('language');
-  }
-
-  getLanguageObj() {
-    return language[this.getLanguage()];
-  }
-
-  setName(name) {
-    localStorage.setItem('name', name);
-  }
-
-  getName() {
-    return localStorage.getItem('name');
-  }
-
-  setIndex(index) {
-    localStorage.setItem('index', index);
-  }
-
-  getIndex() {
-    return localStorage.getItem('index');
-  }
-
-  increaseIndex() {
-    const newIndex = parseInt(this.getIndex(), 10) + 1;
-    this.setIndex(newIndex);
-    return newIndex;
-  }
-
-  setTodo(todos) {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }
-
-  getTodoList() {
-    return JSON.parse(localStorage.getItem('todos'));
-  }
-
-  setDate(date) {
-    localStorage.setItem('date', date);
-  }
-
-  getDate() {
-    return localStorage.getItem('date');
-  }
-
-  setImagesList(imagesList) {
-    localStorage.setItem('images', JSON.stringify(imagesList));
-  }
-
-  getImagesList() {
-    return JSON.parse(localStorage.getItem('images'));
-  }
-
-  setQuoteInFavList(quote) {
-    localStorage.setItem('quotes', JSON.stringify(quote));
-  }
-
-  getFavQuotesList() {
-    return JSON.parse(localStorage.getItem('quotes'));
+    return leaderBoardInfo;
   }
 }
 

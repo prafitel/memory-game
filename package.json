@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --mode development --watch --open",
-    "prod": "webpack --mode production"
+    "build": "webpack --mode production"
   },
   "author": "Alex Volau",
   "license": "ISC",

@@ -24,7 +24,6 @@ class GameView {
   }
 
   render(gameCards) {
-    console.log('gameCards', gameCards);
     this.fillBoard(gameCards);
 
     this.gameBoardClickHandler();
@@ -57,8 +56,6 @@ class GameView {
         !gameCardTarget.classList.contains('is-flipped') &&
         !gameCardTarget.classList.contains('is-matched')
       ) {
-        console.log('xxxxx', gameCardTarget.getAttribute('data-value'));
-
         gameCardTarget.classList.add('is-flipped');
 
         EventEmitter.publish(
@@ -82,11 +79,6 @@ class GameView {
   };
 
   changeInconsistencyPair = ({ score, attempts }) => {
-    console.log(
-      'document.querySelectorAll(`.is-flipped`)',
-      document.querySelectorAll(`.is-flipped`),
-    );
-
     document.querySelectorAll(`.is-flipped`).forEach((item) => {
       item.classList.add('is-wrong');
     });
@@ -105,8 +97,6 @@ class GameView {
 
       EventEmitter.publish('disableControls');
     }, 1500);
-
-    console.log('score, attempts', score, attempts);
 
     this.changeCountersValue(score, attempts);
   };

@@ -38,7 +38,7 @@ class GameControlsView {
   };
 
   disableControls = () => {
-    this.controlsWrapper.classList.toggle('disable-clicks');
+    this.newGameBtn.classList.toggle('disable-clicks');
   };
 }
 

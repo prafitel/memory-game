@@ -1,11 +1,29 @@
 .header__wrapper {
-  .header__start-btn {
-  }
+  display: flex;
+  justify-content: space-around;
 
+  max-width: 500px;
+
+  margin: 0 auto;
+  padding: 10px;
+
+  .header__start-btn,
   .header__leaders-btn {
-  }
+    padding: 10px;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid gray;
+    color: black;
+    background-color: #ffad00;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
-  &.disable-clicks {
-    pointer-events: none;
+    &.disable-clicks {
+      pointer-events: none;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }

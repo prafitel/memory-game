@@ -1,5 +1,6 @@
 import GameView from '../../Views/Game/index.js';
 
+import LocalStorage from '../../Models/LocalStorage/index.js';
 import EventEmitter from '../../Helpers/eventEmitter.js';
 
 const BOARD_SIZE = 8;
@@ -15,10 +16,7 @@ class GameController {
     GameView.renderWrapper();
 
     this.createMemoryItems();
-    console.log(this.memoryItemsList);
-
     this.shuffleMemoryItems();
-    console.log(this.memoryItemsList);
 
     GameView.render(this.memoryItemsList);
 
@@ -47,9 +45,7 @@ class GameController {
   checkCard = (gameCardDataValue) => {
     this.cardToCheckList.push(gameCardDataValue);
 
-    console.log('gameCardDataValue', gameCardDataValue);
-    console.log('this.cardToCheckList', this.cardToCheckList);
-    if (this.cardToCheckList.length < 2) {
+    if (this.cardToCheckList.length < EQUAL_ITEMS_QUANTITY) {
       return;
     }
 
@@ -68,7 +64,6 @@ class GameController {
         attempts: this.gameAttempt,
       });
     } else {
-      console.log('++this.gameAttempt', this.gameAttempt);
       EventEmitter.publish('onInconsistencyPair', {
         score: this.gameScore,
         attempts: this.gameAttempt,
@@ -76,6 +71,12 @@ class GameController {
     }
 
     this.cardToCheckList = [];
+
+    if (this.gameScore === BOARD_SIZE) {
+      EventEmitter.publish('showCongratsModal', this.gameAttempt);
+
+      LocalStorage.setLeaderBoard(this.gameAttempt);
+    }
   };
 
   startNewGame = () => {
