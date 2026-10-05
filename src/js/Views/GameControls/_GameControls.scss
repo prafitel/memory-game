@@ -1,0 +1,11 @@
+.header__wrapper {
+  .header__start-btn {
+  }
+
+  .header__leaders-btn {
+  }
+
+  &.disable-clicks {
+    pointer-events: none;
+  }
+}

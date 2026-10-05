@@ -31,6 +31,7 @@ class GameView {
 
     EventEmitter.subscribe('onMatchPair', this.changeMatchedCards);
     EventEmitter.subscribe('onInconsistencyPair', this.changeInconsistencyPair);
+    EventEmitter.subscribe('onClickNewGameViewPreparing', this.startNewGame);
   }
 
   crateCard(gameCardAttribute) {
@@ -92,6 +93,8 @@ class GameView {
 
     this.disableClickOnCards();
 
+    EventEmitter.publish('disableControls');
+
     setTimeout(() => {
       document.querySelectorAll(`.is-flipped`).forEach((item) => {
         item.classList.remove('is-wrong');
@@ -99,6 +102,8 @@ class GameView {
       });
 
       this.disableClickOnCards();
+
+      EventEmitter.publish('disableControls');
     }, 1500);
 
     console.log('score, attempts', score, attempts);
@@ -114,6 +119,20 @@ class GameView {
   disableClickOnCards() {
     this.gameBoard.classList.toggle('disable-clicks');
   }
+
+  startNewGame = () => {
+    const flippedCards = document.querySelectorAll(`.is-flipped, .is-matched`);
+
+    if (flippedCards) {
+      flippedCards.forEach((item) => {
+        item.classList.remove('is-matched', 'is-flipped');
+      });
+    }
+
+    this.changeCountersValue(0, 0);
+
+    this.gameBoard.replaceChildren();
+  };
 }
 
 export default new GameView();

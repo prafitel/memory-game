@@ -23,6 +23,7 @@ class GameController {
     GameView.render(this.memoryItemsList);
 
     EventEmitter.subscribe('onClickGameCard', this.checkCard);
+    EventEmitter.subscribe('onClickNewGameDataFill', this.startNewGame);
   }
 
   createMemoryItems() {
@@ -75,6 +76,17 @@ class GameController {
     }
 
     this.cardToCheckList = [];
+  };
+
+  startNewGame = () => {
+    this.createMemoryItems();
+    this.shuffleMemoryItems();
+
+    this.cardToCheckList = [];
+    this.gameScore = 0;
+    this.gameAttempt = 0;
+
+    GameView.fillBoard(this.memoryItemsList);
   };
 }
 

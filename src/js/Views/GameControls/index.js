@@ -1,5 +1,6 @@
 import AppView from '../App/index.js';
 
+import EventEmitter from '../../Helpers/eventEmitter.js';
 import createNode from '../../Helpers/createNode.js';
 
 class GameControlsView {
@@ -19,18 +20,25 @@ class GameControlsView {
     this.controlsWrapper.append(this.newGameBtn, this.leaderBoardBtn);
 
     this.controlsClickHandler();
+
+    EventEmitter.subscribe('disableControls', this.disableControls);
   }
 
   controlsClickHandler = () => {
     this.controlsWrapper.addEventListener('click', (event) => {
       if (event.target.closest('.header__start-btn')) {
-        console.log('game start');
+        EventEmitter.publish('onClickNewGameViewPreparing');
+        EventEmitter.publish('onClickNewGameDataFill');
       }
 
       if (event.target.closest('.header__leaders-btn')) {
-        console.log('leader board');
+        EventEmitter.publish('onClickLeaderBoard');
       }
     });
+  };
+
+  disableControls = () => {
+    this.controlsWrapper.classList.toggle('disable-clicks');
   };
 }
 
